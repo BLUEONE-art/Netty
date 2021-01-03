@@ -104,6 +104,8 @@ send + 发送的字符串
 + NIO 是可以用一个线程来处理多个操作的，假设有 10000 个请求过来，根据实际情况，可以分配50或者100个线程来处理。若是 BIO，则必须分配10000个线程来处理。
 + HTTP2.0 使用了多路复用的技术，做到一个连接并发处理多个请求，并且发请求的数量比 HTTP1.0 高几个数量级。
 
+# 2021.1.3记录
+
 ![](C:\Users\DH\Desktop\GitHubCode\Netty\学习笔记\Netty学习笔记.assets\NIO 处理模式.png)
 
 #### Selector、Channel 和 Buffer 的关系
@@ -193,3 +195,72 @@ while (intBuffer.hasRemaining()) {
 ### 缓冲区(Buffer)
 
 其本质是一个可以读写数据的内存块，可以理解为一个==容器对象(含数组)==，该对象提供了一组方法，缓冲区对象内置了一些机制，能够跟踪和记录缓冲区的状态变化情况。Channel 提供从文件、网络读取数据的渠道，但是读取或写入的数据都必须经过 Buffer。
+
++ 在 NIO 中，Buffer 是一个顶层父类，是一个抽象类。其子类有：
+
+  ByteBuffer：     存储字节数据到缓冲区
+
+  ShortBuffer：   存储字符串数据到缓冲区
+
+  CharBuffer：    存储字符数据到缓冲区
+
+  IntBuffer：        存储整数数据到缓冲区
+
+  LongBuffer：    存储长整型数据到缓冲区
+
+  DoubleBuffer：存储小数数据到缓冲区
+
+  FloatBuffer：    存储小数数据到缓冲区
+
++ Buffer 类定义了所有缓冲区都具有四个属性来提供关于其所包含的数据元素信息：
+
+  Capacity：容量，可以容纳的最大数据量；在缓冲区创建时确立，不可修改。
+
+  Limit：       缓冲区的当前终点，不能对缓冲区超过极限的位置进行读写操作。且极限是可以修改的。
+
+  Position：  位置，下一个要被读或写的元素的索引，每次读写缓冲区数据时都会改变值，为下次读写做准备
+
+  Mark：        标记
+
++ Buffer.capacity()：返回缓冲区容量
+
+  Buffer.position()：返回缓冲区的位置
+
+  Buffer.capacity(int newPosition)：设置缓冲区的位置
+
+  Buffer.limit()：返回缓冲区的限制
+
+  Buffer.limit(int newLimit)：设置缓冲区的限制
+
+  Buffer.clear：各个标志恢复到初始状态，数据没有真正擦除
+
++ ByteBuffer allocateDirect(int capacity)：创建直接缓冲区
+
+  ByteBuffer allocate(int capacity)：设置初始缓冲区的容量
+
+  ByteBuffer.get()：从当前位置 position 上get，get 之后，position 会自动 +1
+
+  ByteBuffer.get(int index)：从指定位置上 get
+
+  ByteBuffer.put()：从当前位置 position 上 put，put之后，position 会自动 +1
+
+  ByteBuffer.put(int index)：从指定位置上 put
+
+### 通道(Channel)
+
+1. NIO 的通道类似于流，但有区别
+
++ 通道可以同时进行读写，而流只能读或者只能写；
++ 通道可以实现异步读写数据；
++ 通道可以从缓冲读数据，可以写数据到缓冲区
+
+2. Channel 是 Java 的一个接口
+3. 常用的 Channel 类有：FileChannel(文件数据的读写)、DatagramChannel(对 UDP 数据的读写)、ServerSocketChannel 和 SocketChannel 用于 TCP 数据的读写
+
+#### 常用方法
+
++ FileChannel(ByteBuffer dst)
+
+# IDEA 常用操作
+
++ 选中类 ---> Ctrl + H：查看该类的子类
