@@ -259,7 +259,10 @@ while (intBuffer.hasRemaining()) {
 
 #### 常用方法
 
-+ FileChannel(ByteBuffer dst)
++ FileChannel.read(ByteBuffer dst)：从通道读取并放到缓冲区
++ FileChannel.write(ByteBuffer src)：把缓冲区的数据写到通道中
++ FileChannel.transferFrom(ReadableByteChannel src, long position, long count)：从目标通道中复制数据到当前通道
++ FileChannel.transferTo(long position, long count, WriteableByteChannel target )：把数据从当前通道复制给目标通道
 
 # IDEA 常用操作
 
